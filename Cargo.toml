@@ -1,0 +1,12 @@
+[package]
+name = "swisseph"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bitmask-enum = "2.2.4"
+strum = "0.26"
+strum_macros = "0.26"
+
+libswisseph-sys = "0.1.0"
+#libswisseph-sys = { path = "/home/yoni/Code/personal/libswisseph-sys_rs" }
