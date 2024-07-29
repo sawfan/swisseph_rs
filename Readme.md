@@ -1,11 +1,11 @@
 # swisseph_rs
  
-##WIP: This project is under construction and interfaces should not be considered to be final!
 
 Unofficial `swisseph_rs` implements higher level rust wrappers and types around the swisseph c library.
 The goal would be to provide multiple different levels of abstraction based on the need of
 the caller. 
 
+### WIP: This project is under construction and interfaces should not be considered to be final!
 
 ## TODO:
 * Many functions still need to be implemented. 
