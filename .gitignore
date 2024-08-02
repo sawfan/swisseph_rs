@@ -1,3 +1,4 @@
 /target
 Cargo.lock
 src/old.rs
+/examples/config.toml

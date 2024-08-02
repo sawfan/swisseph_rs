@@ -65,13 +65,17 @@ pub fn split_deg2(ddeg: f64, roundflag: SplitDegKind) -> SplitDegree {
     SplitDegree::from_tuple(sd)
 }
 
-pub fn split_deg2_zodiacal(ddeg: f64, roundflag: SplitDegKind) -> SplitDegreeZodiacal {
+pub fn split_deg2_zodiacal(ddeg: f64, roundflag: SplitDegKind) -> ZodiacalSplitDegree {
     let s = split_deg2(ddeg, SplitDegKind::Zodiacal | roundflag);
-    let sd = SplitDegreeZodiacal::from_split_deg(s);
+    let sd = ZodiacalSplitDegree::from_split_deg(s);
     sd
 }
 
-pub fn calc2(tjd: f64, body: Body, flag: crate::types::Seflg) -> Result<CalcResult, String> {
+pub fn calc2(
+    tjd: f64, 
+    body: Body, 
+    flag: Seflg
+) -> Result<CalcResult, String> {
     let ipl = body as i32;
     let c = swe::calc(tjd, ipl, flag.bits() as i32)?;
 
@@ -87,7 +91,11 @@ pub fn calc2(tjd: f64, body: Body, flag: crate::types::Seflg) -> Result<CalcResu
     }
 }
 
-pub fn calc_ut2(tjd: f64, body: Body, flag: crate::types::Seflg) -> Result<CalcResult, String> {
+pub fn calc_ut2(
+    tjd: f64, 
+    body: Body, 
+    flag: Seflg
+) -> Result<CalcResult, String> {
     let ipl = body as u32;
     let c = swe::calc_ut(tjd, ipl, flag.bits())?;
 
@@ -107,7 +115,7 @@ use CalcResult::*;
 pub fn calc_ut2_ecliptic(
     tjd: f64,
     body: Body,
-    flag: crate::types::Seflg,
+    flag: Seflg,
 ) -> Result<EclipticPosition, String> {
     let c = calc_ut2(tjd, body, flag)?;
     match c {
@@ -121,7 +129,7 @@ pub fn calc_ut2_ecliptic(
 pub fn calc_ut2_equatorial(
     tjd: f64,
     body: Body,
-    flag: crate::types::Seflg,
+    flag: Seflg,
 ) -> Result<EquatorialPosition, String> {
     let c = calc_ut2(tjd, body, Seflg::EQUATORIAL | flag)?;
     match c {
@@ -135,7 +143,7 @@ pub fn calc_ut2_equatorial(
 pub fn calc_ut2_rectangular(
     tjd: f64,
     body: Body,
-    flag: crate::types::Seflg,
+    flag: Seflg,
 ) -> Result<RectangularPosition, String> {
     let c = calc_ut2(tjd, body, Seflg::XYZ | flag)?;
     match c {
@@ -148,12 +156,6 @@ pub fn calc_ut2_rectangular(
 
 pub fn julday2(dt: DateTime, c: CalandarKind) -> f64 {
     swe::julday(dt.year, dt.month, dt.day, dt.hour, c as u32)
-}
-
-#[derive(Debug)]
-pub struct JulianDay {
-    pub et: f64, // ET (TT)
-    pub ut: f64, // UT (UT1)
 }
 
 pub fn utc_to_jd2(

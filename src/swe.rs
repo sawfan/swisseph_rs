@@ -653,7 +653,6 @@ pub fn utc_time_zone(
     }
 }
 
-
 pub fn utc_to_jd(
         iyear: i32,
         imonth: i32,

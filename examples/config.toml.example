@@ -1,0 +1,17 @@
+# USA Sibly
+
+# Philadelphia, PA, USA  39.9526° N, 75.1652° W
+geolat = -75.1652
+geolon =  39.9526
+
+# Thursday, July 4, 1776, 4:50 PM
+#  EDT Eastern Daylight Savings Time 4 hour offset
+year = 1776
+month = 7
+day = 4
+
+# 5:10 PM LMT +5
+hour = 16   
+minute = 10
+second = 0
+

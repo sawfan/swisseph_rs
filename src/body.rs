@@ -1,9 +1,10 @@
 use libswisseph_sys::*;
 use strum_macros::{EnumString, EnumIter, FromRepr};
 
-#[derive(Debug, Clone, EnumIter, EnumString, FromRepr)]
+#[derive(Debug, Clone, EnumIter, EnumString, FromRepr, Default)]
 #[repr(isize)]
 pub enum Body {
+    #[default]
     EclNut              = SE_ECL_NUT        as isize,
     Sun                 = SE_SUN            as isize,          
     Moon                = SE_MOON           as isize,          
@@ -145,13 +146,20 @@ pub enum Body {
     //9999  Pluto/COB
 }
 
-
 impl Body {
     pub fn standard_bodies() -> Vec<Body> {
-        let _a: Vec<Body> = (SE_SUN..SE_MEAN_APOG).map(|x| {
+        let _a: Vec<Body> = (SE_SUN..SE_TRUE_NODE).map(|x| {
             Body::from_repr(x.try_into().unwrap()).unwrap()
         }).collect();
 
         _a
     }
+    pub fn to_text(&self) -> String {
+        crate::body_emoji::body_emoji(self).clone()
+    }
+
+    pub fn to_emoji(&self) -> String {
+        crate::body_emoji::body_emoji(self).clone()
+    }
 }
+
