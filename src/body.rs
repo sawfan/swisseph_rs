@@ -148,12 +148,26 @@ pub enum Body {
 
 impl Body {
     pub fn standard_bodies() -> Vec<Body> {
-        let _a: Vec<Body> = (SE_SUN..SE_TRUE_NODE).map(|x| {
-            Body::from_repr(x.try_into().unwrap()).unwrap()
+        let b: Vec<_> = (SE_SUN..SE_TRUE_NODE).collect();
+
+        let bodies: Vec<Body> = b.iter().map(|x| {
+            Body::from_repr(*x as isize).unwrap()
         }).collect();
 
-        _a
+        bodies
     }
+
+    pub fn standard_bodies_with_chiron() -> Vec<Body> {
+        let mut b: Vec<_> = (SE_SUN..SE_TRUE_NODE).collect();
+        b.push(SE_CHIRON);
+
+        let bodies: Vec<Body> = b.iter().map(|x| {
+            Body::from_repr(*x as isize).unwrap()
+        }).collect();
+
+        bodies
+    }
+
     pub fn to_text(&self) -> String {
         crate::body_emoji::body_emoji(self).clone()
     }

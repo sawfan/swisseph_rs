@@ -1,5 +1,8 @@
 use libswisseph_sys as raw;
 
+use std::ffi::CString;
+use std::os::raw::c_char;
+
 use crate::*;
 
 ////////////////////////////////////////
@@ -585,15 +588,20 @@ pub fn get_library_path() -> String {
     }
 }
 
+
 pub fn set_ephe_path(s: &str) {
     unsafe {
-        raw::swe_set_ephe_path(s.as_ptr() as *const i8);
+        let c_str = CString::new(s).unwrap();
+        let path: *const c_char = c_str.as_ptr() as *const c_char;
+        raw::swe_set_ephe_path(path);
     }
 }
 
 pub fn set_jpl_file(s: &str) {
     unsafe {
-        raw::swe_set_jpl_file(s.as_ptr() as *const i8);
+        let c_str = CString::new(s).unwrap();
+        let file: *const c_char = c_str.as_ptr() as *const c_char;
+        raw::swe_set_jpl_file(file);
     }
 }
 
