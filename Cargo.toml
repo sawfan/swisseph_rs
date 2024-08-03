@@ -1,6 +1,6 @@
 [package]
 name = "swisseph"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "AGPL-3.0-only"
 keywords = ["ephemeris", "astrology", "astronomy", "zodiac", "zodiacal"]
@@ -15,7 +15,8 @@ strum_macros = "0.26"
 ## You can also access strum_macros exports directly through strum using the "derive" feature
 #strum = { version = "0.26", features = ["derive"] }
 
-libswisseph-sys = "0.1.0"
+#libswisseph-sys = "0.1.0"
+libswisseph-sys = { path = "/home/yoni/Code/personal/libswisseph-sys_rs" }
 
 derive_builder = "0.20.0"
 
