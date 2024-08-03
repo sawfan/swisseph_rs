@@ -24,6 +24,9 @@ fn main() {
     let minute = config.minute;
     let second = config.second;
 
+    let ephe_path = "/users/ephe";
+    swe::set_ephe_path(ephe_path);
+
     let tjd = utc_to_jd2(year, month, day, hour, minute, second, Gregorian).unwrap();
     let tjd_ut = tjd.ut;
 
@@ -53,6 +56,9 @@ fn main() {
     let combined = [zi.0.clone(), zi.1.0.clone(), zi.1.1.clone()].concat();
 
     println!("{:#?}", combined);
+
+    swe::close();
+
 }
 
 fn get_config() -> Config {
