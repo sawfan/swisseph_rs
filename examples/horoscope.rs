@@ -1,17 +1,20 @@
 use std::fs;
 use std::path::PathBuf;
 
+use chrono::Timelike;
 use serde_derive::Deserialize;
 
-use swisseph::*;
 use swisseph::swe2::*;
-use swisseph::HouseSystemKind::*;
 use swisseph::Body::*;
+use swisseph::HouseSystemKind::*;
+use swisseph::*;
 use CalandarKind::*;
 
+// This will return the current time's horoscope for New York unless a config.toml is present, in
+// which case the custom configuration will be used.
 fn main() {
-    // copy examples/config.toml.example to examples/config.toml to customize.
-    // otherwise, New York's current day config will be used
+    // Copy examples/config.toml.example to examples/config.toml to customize.
+    // Otherwise, New York's current time config will be used.
     let config = get_config();
 
     let geolat = config.geolat;
@@ -23,42 +26,60 @@ fn main() {
     let hour = config.hour;
     let minute = config.minute;
     let second = config.second;
+    let timezone = config.timezone;
 
-    let ephe_path = "/users/ephe";
-    swe::set_ephe_path(ephe_path);
+    // let ephe_path = "/users/ephe";
+    // swe::set_ephe_path(ephe_path);
 
-    let tjd = utc_to_jd2(year, month, day, hour, minute, second, Gregorian).unwrap();
+    // Convert local civil time + timezone offset to UT, then to Julian Day.
+    let ut_time = utc_time_zone2(year, month, day, hour, minute, second, timezone);
+    let tjd = utc_to_jd2(
+        ut_time.iyear_out,
+        ut_time.imonth_out,
+        ut_time.iday_out,
+        ut_time.ihour_out,
+        ut_time.imin_out,
+        ut_time.dsec_out,
+        Gregorian,
+    )
+    .unwrap();
     let tjd_ut = tjd.ut;
 
     let nutation = calc_ut2_ecliptic(tjd_ut, EclNut, Seflg::SPEED).unwrap();
     let eps = nutation.longitude;
 
-    let h = houses2(tjd_ut, geolon, geolat, Placidus);
-    let armc = h.1.armc; // should be in degrees
-    let pp: Vec<ZodiacalBody> = Body::standard_bodies().iter().map(|b| {
-        let planet_pos = calc_ut2_ecliptic(tjd_ut, b.clone(), Seflg::none()).unwrap();
-        let planet_lon = planet_pos.longitude;
-        let planet_lat = planet_pos.latitude;
-        let hp = house_pos2(armc, geolon, eps, Placidus, planet_lon, planet_lat).unwrap();
-        let body_deg = split_deg2_zodiacal(planet_lon, SplitDegKind::none());
-        let zb = ZodiacalBody::new(b.clone(), hp, body_deg);
+    // Use (latitude, longitude) ordering for houses2 and house_pos2.
+    let h = houses2(tjd_ut, geolat, geolon, Placidus);
+    let armc = h.1.armc; // right ascension of MC in degrees
 
-        zb
-    }).collect();
+    let pp: Vec<ZodiacalBody> = Body::standard_bodies()
+        .iter()
+        .map(|b| {
+            let planet_pos = calc_ut2_ecliptic(tjd_ut, b.clone(), Seflg::none()).unwrap();
+            let planet_lon = planet_pos.longitude;
+            let planet_lat = planet_pos.latitude;
+
+            let hp = house_pos2(armc, geolat, eps, Placidus, planet_lon, planet_lat).unwrap();
+            let body_deg = split_deg2_zodiacal(planet_lon, SplitDegKind::none());
+            ZodiacalBody::new(b.clone(), hp, body_deg)
+        })
+        .collect();
 
     let z_asc_mc = ZodiacalAscMc::new(h.1.clone());
     let z_cusp = ZodiacalCusp::new(h.0);
-    let zodiacal_house = ZodiacalHouses {asc_mc: z_asc_mc, cusp: z_cusp};
+    let zodiacal_house = ZodiacalHouses {
+        asc_mc: z_asc_mc,
+        cusp: z_cusp,
+    };
 
     let zodiacal_info = ZodiacalInfo::new(zodiacal_house, pp);
 
     let zi = zodiacal_info.to_text();
-    let combined = [zi.0.clone(), zi.1.0.clone(), zi.1.1.clone()].concat();
+    let combined = [zi.0.clone(), zi.1 .0.clone(), zi.1 .1.clone()].concat();
 
     println!("{:#?}", combined);
 
     swe::close();
-
 }
 
 fn get_config() -> Config {
@@ -66,24 +87,28 @@ fn get_config() -> Config {
     config_file.push("examples/config.toml");
 
     let config = match fs::read_to_string(config_file) {
-        Ok(c) => {
-            match toml::from_str(&c) {
-                Ok(d) => d,
-                Err(_) => {
-                    Config::default()
-                }
+        Ok(c) => match toml::from_str(&c) {
+            Ok(d) => {
+                println!("Overriding defaults using config.toml");
+                d
+            }
+            Err(_) => {
+                println!("Error reading from config.toml, falling back to default");
+                Config::default()
             }
         },
-        Err(_) => {
-            Config::default()
-        }
+        Err(_) => Config::default(),
     };
 
     config
 }
 
-// Config struct holds to data from the `[config]` section.
-#[derive(Deserialize)]
+// Config struct holds the data from the `[config]` section.
+fn default_timezone() -> f64 {
+    0.0 // Greenwich
+}
+
+#[derive(Deserialize, Debug)]
 struct Config {
     geolat: f64,
     geolon: f64,
@@ -94,26 +119,38 @@ struct Config {
     hour: i32,
     minute: i32,
     second: f64,
+
+    // Timezone offset from UTC in hours (e.g. -5.0 for UTC-5)
+    #[serde(default = "default_timezone")]
+    timezone: f64,
 }
 
 impl Default for Config {
-    fn default() -> Self { 
-
+    fn default() -> Self {
         // New York: 40.7128° N, 74.0060° W
-        let geolat = -74.0060;
-        let geolon = 40.7128;
+        let geolat = 40.43;
+        let geolon = -74.00;
 
         use chrono::Datelike;
         let current_date = chrono::Utc::now();
         let year = current_date.year();
         let month = current_date.month() as i32;
-        let day = current_date.day() as i32;       
+        let day = current_date.day() as i32;
+        let hour = current_date.hour() as i32;
+        let minute = current_date.minute() as i32;
+        let second = current_date.second() as f64;
+        let timezone = default_timezone();
 
-        let hour = 12;
-        let minute = 0;
-        let second = 0.;
-
-        Config {geolat, geolon, year, month, day, hour, minute, second}
+        Config {
+            geolat,
+            geolon,
+            year,
+            month,
+            day,
+            hour,
+            minute,
+            second,
+            timezone,
+        }
     }
 }
-
