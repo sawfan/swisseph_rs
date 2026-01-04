@@ -64,8 +64,7 @@ fn main() {
 
     assert_eq!(ZodiacalSign::Sagittarius, asc_sign);
 
-    println!("zb: {:#?}", _zodiacal_info);
+    println!("{:#?}", _zodiacal_info);
 
-    //let s = split_deg2(h.1.ascendant, SplitDegKind::Zodiacal);
-    //panic!("ASC: {:#?}", s);
+    swe::close();
 }
