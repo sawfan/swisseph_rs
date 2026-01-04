@@ -1,7 +1,8 @@
-use strum_macros::{EnumString, EnumIter, FromRepr};
+use strum_macros::{EnumIter, EnumString, FromRepr};
 
-#[derive(Debug, Clone, EnumIter, EnumString, FromRepr)]
+#[derive(Debug, Clone, EnumIter, EnumString, FromRepr, PartialEq, PartialOrd)]
 #[repr(isize)]
+#[rustfmt::skip]
 pub enum ZodiacalSign {
     Aries       = 0,
     Taurus      = 1,
@@ -18,7 +19,7 @@ pub enum ZodiacalSign {
 }
 
 impl ZodiacalSign {
-
+    #[rustfmt::skip]
     pub fn to_text(&self) -> String {
         use ZodiacalSign::*;
         match self {
@@ -49,6 +50,7 @@ impl ZodiacalSign {
     }
 
 
+    #[rustfmt::skip]
     pub fn to_emoji(&self) -> String {
         use ZodiacalSign::*;
         match self {
@@ -93,4 +95,3 @@ impl ZodiacalSign {
         }
     }
 }
-
