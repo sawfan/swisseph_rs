@@ -1,5 +1,6 @@
 use crate::*;
 
+#[rustfmt::skip]
 pub fn body_emoji(body: &Body) -> String {
     use Body::*;
     match body {
@@ -143,9 +144,6 @@ pub fn body_emoji(body: &Body) -> String {
     }
 }
 
-
-
-
 //☾	U+263E
 //        EclNut             => "".to_owned() ,
 //Pluto	Pluto (bident symbol) Pluto (bident symbol)	⯓	U+2BD3	Pluto's orb and a bident
@@ -156,4 +154,4 @@ pub fn body_emoji(body: &Body) -> String {
 //
 //Pluto	⯕	U+2BD5	Symbol invented by German astrologer Hermann Lefeldt in 1946. Used by some followers of the Hamburg School of Astrology.[32] Also proposed for Pluto's moon Charon.[21]
 //
-//PlutoPluto	⯖	U+2BD6	Pluto's orbit crossing that of Neptune. Symbol mostly used in German-speaking 
+//PlutoPluto	⯖	U+2BD6	Pluto's orbit crossing that of Neptune. Symbol mostly used in German-speaking

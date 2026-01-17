@@ -1,7 +1,8 @@
-use libswisseph_sys::*;
 use bitmask_enum::*;
+use libswisseph_sys::*;
 
 #[bitmask(u32)]
+#[rustfmt::skip]
 pub enum SplitDegKind {
     RoundSec    = SE_SPLIT_DEG_ROUND_SEC,
     RoundMin    = SE_SPLIT_DEG_ROUND_MIN,
@@ -38,4 +39,3 @@ impl SplitDegree {
         format!("{}°{}′{}″", self.ideg, self.imin, self.isec)
     }
 }
-
