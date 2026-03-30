@@ -2,3 +2,4 @@
 Cargo.lock
 src/old.rs
 /examples/config.toml
+.cargo/config.toml
