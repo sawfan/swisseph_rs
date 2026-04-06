@@ -1,4 +1,5 @@
-use libswisseph_sys as raw;
+//use libswisseph_sys as raw;
+use libswisseph_sys::raw;
 
 use std::ffi::CString;
 use std::os::raw::c_char;
@@ -11,20 +12,10 @@ use crate::*;
 // todo: create different structs with named args for each case
 ////////////////////////////////////////
 
-pub fn calc(
-        tjd: f64,
-        ipl: i32,
-        iflag: i32,
-) -> Result<Out<CalcPrimRet, i32>, String> {
+pub fn calc(tjd: f64, ipl: i32, iflag: i32) -> Result<Out<CalcPrimRet, i32>, String> {
     unsafe {
         let (mut out, mut serr) = new_ret_serr();
-        let code = raw::swe_calc(
-            tjd, 
-            ipl, 
-            iflag, 
-            out.as_mut_ptr(), 
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_calc(tjd, ipl, iflag, out.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = string_from_i8_array(serr);
@@ -36,18 +27,14 @@ pub fn calc(
     }
 }
 
-pub fn calc_ut(
-    tjd_ut: f64,
-    ipl: u32,
-    iflag: u32,
-) -> Result<Out<CalcPrimRet, i32>, String> {
+pub fn calc_ut(tjd_ut: f64, ipl: u32, iflag: u32) -> Result<Out<CalcPrimRet, i32>, String> {
     unsafe {
         let (mut out, mut serr) = new_ret_serr();
         let code = raw::swe_calc_ut(
-            tjd_ut, 
-            ipl as i32, 
-            iflag as i32, 
-            out.as_mut_ptr(), 
+            tjd_ut,
+            ipl as i32,
+            iflag as i32,
+            out.as_mut_ptr(),
             serr.as_mut_ptr(),
         );
 
@@ -62,19 +49,13 @@ pub fn calc_ut(
 }
 
 pub fn fixstar(
-    star: *mut ::std::os::raw::c_char,  // TODO: use &str
+    star: *mut ::std::os::raw::c_char, // TODO: use &str
     tjd: f64,
     iflag: i32,
 ) -> Result<Out<CalcPrimRet, i32>, String> {
     unsafe {
         let (mut out, mut serr) = new_ret_serr();
-        let code = raw::swe_fixstar(
-            star,
-            tjd,
-            iflag,
-            out.as_mut_ptr(), 
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_fixstar(star, tjd, iflag, out.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = string_from_i8_array(serr);
@@ -87,19 +68,13 @@ pub fn fixstar(
 }
 
 pub fn fixstar_ut(
-        star: *mut ::std::os::raw::c_char,
-        tjd_ut: f64,
-        iflag: i32,
+    star: *mut ::std::os::raw::c_char,
+    tjd_ut: f64,
+    iflag: i32,
 ) -> Result<Out<CalcPrimRet, i32>, String> {
     unsafe {
         let (mut out, mut serr) = new_ret_serr();
-        let code = raw::swe_fixstar_ut(
-            star,
-            tjd_ut,
-            iflag,
-            out.as_mut_ptr(), 
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_fixstar_ut(star, tjd_ut, iflag, out.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = string_from_i8_array(serr);
@@ -114,21 +89,14 @@ pub fn fixstar_ut(
 ////////////////////////////////////////
 
 pub fn calc_pctr(
-        tjd: f64,
-        ipl: i32,
-        iplctr: i32,
-        iflag: i32,
+    tjd: f64,
+    ipl: i32,
+    iplctr: i32,
+    iflag: i32,
 ) -> Result<Out<CalcPrimRet, i32>, String> {
     unsafe {
         let (mut out, mut serr) = new_ret_serr(); // TODO: double check return vec size
-        let code = raw::swe_calc_pctr(
-            tjd,
-            ipl,
-            iplctr,
-            iflag,
-            out.as_mut_ptr(),
-            serr.as_mut_ptr()
-        );
+        let code = raw::swe_calc_pctr(tjd, ipl, iplctr, iflag, out.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = string_from_i8_array(serr);
@@ -140,19 +108,10 @@ pub fn calc_pctr(
     }
 }
 
-pub fn solcross(
-    x2cross: f64,
-    jd_et: f64,
-    flag: i32,
-) -> Result<f64, String> {
+pub fn solcross(x2cross: f64, jd_et: f64, flag: i32) -> Result<f64, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_solcross(
-            x2cross,
-            jd_et,
-            flag,
-            serr.as_mut_ptr(),
-        );
+        let jx = raw::swe_solcross(x2cross, jd_et, flag, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -165,19 +124,10 @@ pub fn solcross(
     }
 }
 
-pub fn solcross_ut(
-    x2cross: f64,
-    jd_ut: f64,
-    flag: i32,
-) -> Result<f64, String> {
+pub fn solcross_ut(x2cross: f64, jd_ut: f64, flag: i32) -> Result<f64, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_solcross_ut(
-            x2cross,
-            jd_ut,
-            flag,
-            serr.as_mut_ptr(),
-        );
+        let jx = raw::swe_solcross_ut(x2cross, jd_ut, flag, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -190,19 +140,10 @@ pub fn solcross_ut(
     }
 }
 
-pub fn mooncross(
-    x2cross: f64,
-    jd_et: f64,
-    flag: i32,
-) -> Result<f64, String> {
+pub fn mooncross(x2cross: f64, jd_et: f64, flag: i32) -> Result<f64, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_mooncross(
-            x2cross,
-            jd_et,
-            flag,
-            serr.as_mut_ptr(),
-        );
+        let jx = raw::swe_mooncross(x2cross, jd_et, flag, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -215,19 +156,10 @@ pub fn mooncross(
     }
 }
 
-pub fn mooncross_ut(
-    x2cross: f64,
-    jd_ut: f64,
-    flag: i32,
-) -> Result<f64, String> {
+pub fn mooncross_ut(x2cross: f64, jd_ut: f64, flag: i32) -> Result<f64, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_mooncross_ut(
-            x2cross,
-            jd_ut,
-            flag,
-            serr.as_mut_ptr(),
-        );
+        let jx = raw::swe_mooncross_ut(x2cross, jd_ut, flag, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -241,24 +173,16 @@ pub fn mooncross_ut(
 }
 
 pub fn helio_cross(
-        ipl: i32,
-        x2cross: f64,
-        jd_et: f64,
-        iflag: i32,
-        dir: i32,
-        jd_cross: *mut f64,     // TODO:   change to array type
+    ipl: i32,
+    x2cross: f64,
+    jd_et: f64,
+    iflag: i32,
+    dir: i32,
+    jd_cross: *mut f64, // TODO:   change to array type
 ) -> Result<i32, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_helio_cross(
-            ipl,
-            x2cross,
-            jd_et,
-            iflag,
-            dir,
-            jd_cross,
-            serr.as_mut_ptr(),
-        );
+        let jx = raw::swe_helio_cross(ipl, x2cross, jd_et, iflag, dir, jd_cross, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -281,15 +205,8 @@ pub fn swe_helio_cross(
 ) -> Result<i32, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let jx = raw::swe_helio_cross_ut(
-            ipl,
-            x2cross,
-            jd_ut,
-            iflag,
-            dir,
-            jd_cross,
-            serr.as_mut_ptr(),
-        );
+        let jx =
+            raw::swe_helio_cross_ut(ipl, x2cross, jd_ut, iflag, dir, jd_cross, serr.as_mut_ptr());
 
         // jx = time of next crossing
         // In case of error, a value of jx < tjd
@@ -303,27 +220,19 @@ pub fn swe_helio_cross(
 }
 
 pub fn close() {
-    unsafe {
-        raw::swe_close()
-    }
+    unsafe { raw::swe_close() }
 }
 
 pub fn get_ayanamsa(tjd_et: f64) -> f64 {
-    unsafe {
-        raw::swe_get_ayanamsa(tjd_et)
-    }
+    unsafe { raw::swe_get_ayanamsa(tjd_et) }
 }
 
 pub fn get_ayanamsa_ut(tjd_ut: f64) -> f64 {
-    unsafe {
-        raw::swe_get_ayanamsa_ut(tjd_ut)
-    }
+    unsafe { raw::swe_get_ayanamsa_ut(tjd_ut) }
 }
 
 pub fn julday(year: i32, month: i32, day: i32, hour: f64, gregflag: u32) -> f64 {
-    unsafe {
-        raw::swe_julday(year, month, day, hour, gregflag as i32)
-    }
+    unsafe { raw::swe_julday(year, month, day, hour, gregflag as i32) }
 }
 
 //double *dret);      /* array of 4 doubles; declare 20 ! */
@@ -333,12 +242,12 @@ pub fn julday(year: i32, month: i32, day: i32, hour: f64, gregflag: u32) -> f64 
 //   * - dret[3] dip of the horizon
 //   /* either SE_TRUE_TO_APP or SE_APP_TO_TRUE */
 pub fn refrac_extended(
-        inalt: f64,
-        geoalt: f64,
-        atpress: f64,
-        attemp: f64,
-        lapse_rate: f64,
-        calc_flag: i32,
+    inalt: f64,
+    geoalt: f64,
+    atpress: f64,
+    attemp: f64,
+    lapse_rate: f64,
+    calc_flag: i32,
 ) -> Out<[f64; 20], f64> {
     unsafe {
         let mut dret: [f64; 20] = [0.0; 20];
@@ -366,13 +275,8 @@ pub fn get_orbital_elements(
         let mut serr = crate::new_serr_buffer();
         let mut dret: [f64; 6] = [0.0; 6];
 
-        let code = raw::swe_get_orbital_elements(
-            tjd_et, 
-            ipl,
-            iflag,
-            dret.as_mut_ptr(),
-            serr.as_mut_ptr(),
-        );
+        let code =
+            raw::swe_get_orbital_elements(tjd_et, ipl, iflag, dret.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = String::from_utf8(serr.iter().map(|&c| c as u8).collect()).unwrap();
@@ -385,23 +289,14 @@ pub fn get_orbital_elements(
 }
 
 pub fn deltat(tjd: f64) -> f64 {
-    unsafe {
-        raw::swe_deltat(tjd)
-    }
+    unsafe { raw::swe_deltat(tjd) }
 }
 
-pub fn deltat_ex(
-    tjd: f64, 
-    iflag: i32, 
-) -> Result<f64, String> {
+pub fn deltat_ex(tjd: f64, iflag: i32) -> Result<f64, String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
 
-        let code = raw::swe_deltat_ex(
-            tjd, 
-            iflag,
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_deltat_ex(tjd, iflag, serr.as_mut_ptr());
 
         if code < 0.0 {
             let serr = String::from_utf8(serr.iter().map(|&c| c as u8).collect()).unwrap();
@@ -412,19 +307,13 @@ pub fn deltat_ex(
     }
 }
 
-pub fn time_equ(
-    tjd: f64, 
-) -> Result<Out<[f64; 6], i32>, String> {
+pub fn time_equ(tjd: f64) -> Result<Out<[f64; 6], i32>, String> {
     unsafe {
         // TODO! check size!!!
         let mut te: [f64; 6] = [0.0; 6];
         let mut serr = crate::new_serr_buffer();
 
-        let code = raw::swe_time_equ(
-            tjd, 
-            te.as_mut_ptr(), 
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_time_equ(tjd, te.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = String::from_utf8(serr.iter().map(|&c| c as u8).collect()).unwrap();
@@ -436,21 +325,13 @@ pub fn time_equ(
     }
 }
 
-pub fn lmt_to_lat(
-    tjd_lmt: f64,
-    geolon: f64,
-) -> Result<Out<[f64; 6], i32>, String> {
+pub fn lmt_to_lat(tjd_lmt: f64, geolon: f64) -> Result<Out<[f64; 6], i32>, String> {
     unsafe {
         // TODO! check size!!!
         let mut tjd_lat: [f64; 6] = [0.0; 6];
         let mut serr = crate::new_serr_buffer();
 
-        let code = raw::swe_lmt_to_lat(
-            tjd_lmt,
-            geolon,
-            tjd_lat.as_mut_ptr(),
-            serr.as_mut_ptr()
-        );
+        let code = raw::swe_lmt_to_lat(tjd_lmt, geolon, tjd_lat.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = String::from_utf8(serr.iter().map(|&c| c as u8).collect()).unwrap();
@@ -462,21 +343,13 @@ pub fn lmt_to_lat(
     }
 }
 
-pub fn lat_to_lmt(
-    tjd_lat: f64,
-    geolon: f64,
-) -> Result<Out<[f64; 6], i32>, String> {
+pub fn lat_to_lmt(tjd_lat: f64, geolon: f64) -> Result<Out<[f64; 6], i32>, String> {
     unsafe {
         // TODO! check size!!!
         let mut tjd_lmt: [f64; 6] = [0.0; 6];
         let mut serr = crate::new_serr_buffer();
 
-        let code = raw::swe_lat_to_lmt(
-            tjd_lat,
-            geolon,
-            tjd_lmt.as_mut_ptr(),
-            serr.as_mut_ptr(),
-        );
+        let code = raw::swe_lat_to_lmt(tjd_lat, geolon, tjd_lmt.as_mut_ptr(), serr.as_mut_ptr());
 
         if code < 0 {
             let serr = String::from_utf8(serr.iter().map(|&c| c as u8).collect()).unwrap();
@@ -489,87 +362,59 @@ pub fn lat_to_lmt(
 }
 
 pub fn sidtime0(tjd_ut: f64, eps: f64, nut: f64) -> f64 {
-    unsafe {
-        raw::swe_sidtime0(tjd_ut, eps, nut) 
-    }
+    unsafe { raw::swe_sidtime0(tjd_ut, eps, nut) }
 }
 
 pub fn sidtime(tjd_ut: f64) -> f64 {
-    unsafe {
-        raw::swe_sidtime(tjd_ut)
-    }
+    unsafe { raw::swe_sidtime(tjd_ut) }
 }
 
 pub fn get_tid_acc() -> f64 {
-    unsafe {
-        raw::swe_get_tid_acc()
-    }
+    unsafe { raw::swe_get_tid_acc() }
 }
 
 pub fn set_tid_acc(t_acc: f64) {
-    unsafe {
-        raw::swe_set_tid_acc(t_acc)
-    }
+    unsafe { raw::swe_set_tid_acc(t_acc) }
 }
 
 pub fn set_delta_t_userdef(dt: f64) {
-    unsafe {
-        raw::swe_set_delta_t_userdef(dt)
-    }
+    unsafe { raw::swe_set_delta_t_userdef(dt) }
 }
 
 pub fn degnorm(x: f64) -> f64 {
-    unsafe {
-        raw::swe_degnorm(x)
-    }
+    unsafe { raw::swe_degnorm(x) }
 }
 
 pub fn radnorm(x: f64) -> f64 {
-    unsafe {
-        raw::swe_radnorm(x)
-    }
+    unsafe { raw::swe_radnorm(x) }
 }
 
 pub fn rad_midp(x1: f64, x0: f64) -> f64 {
-    unsafe {
-        raw::swe_rad_midp(x1, x0)
-    }
+    unsafe { raw::swe_rad_midp(x1, x0) }
 }
 
 pub fn deg_midp(x1: f64, x0: f64) -> f64 {
-    unsafe {
-        raw::swe_deg_midp(x1, x0)
-    }
+    unsafe { raw::swe_deg_midp(x1, x0) }
 }
 
 pub fn difdegn(p1: f64, p2: f64) -> f64 {
-    unsafe {
-        raw::swe_difdegn(p1, p2)
-    }
+    unsafe { raw::swe_difdegn(p1, p2) }
 }
 
 pub fn difdeg2n(p1: f64, p2: f64) -> f64 {
-    unsafe {
-        raw::swe_difdeg2n(p1, p2)
-    }
+    unsafe { raw::swe_difdeg2n(p1, p2) }
 }
 
 pub fn difrad2n(p1: f64, p2: f64) -> f64 {
-    unsafe {
-        raw::swe_difrad2n(p1, p2)
-    }
+    unsafe { raw::swe_difrad2n(p1, p2) }
 }
 
 pub fn swe_d2l(x: f64) -> i32 {
-    unsafe {
-        raw::swe_d2l(x)
-    }
+    unsafe { raw::swe_d2l(x) }
 }
 
 pub fn day_of_week(jd: f64) -> i32 {
-    unsafe {
-        raw::swe_day_of_week(jd)
-    }
+    unsafe { raw::swe_day_of_week(jd) }
 }
 
 pub fn version() -> String {
@@ -588,7 +433,6 @@ pub fn get_library_path() -> String {
     }
 }
 
-
 pub fn set_ephe_path(s: &str) {
     unsafe {
         let c_str = CString::new(s).unwrap();
@@ -605,9 +449,7 @@ pub fn set_jpl_file(s: &str) {
     }
 }
 
-pub fn get_planet_name(
-    ipl: i32,
-) -> String {
+pub fn get_planet_name(ipl: i32) -> String {
     unsafe {
         let spname = [0; 256];
         let pn = raw::swe_get_planet_name(ipl, spname.as_ptr() as *mut i8);
@@ -615,9 +457,7 @@ pub fn get_planet_name(
     }
 }
 
-pub fn house_name(
-    hsys: i32,
-) -> String {
+pub fn house_name(hsys: i32) -> String {
     unsafe {
         let hn = raw::swe_house_name(hsys);
         util::c_chars_to_string(hn as *mut i8)
@@ -657,22 +497,24 @@ pub fn utc_time_zone(
             &mut dsec_out,
         );
 
-        (iyear_out, imonth_out, iday_out, ihour_out, imin_out, dsec_out)
+        (
+            iyear_out, imonth_out, iday_out, ihour_out, imin_out, dsec_out,
+        )
     }
 }
 
 pub fn utc_to_jd(
-        iyear: i32,
-        imonth: i32,
-        iday: i32,
-        ihour: i32,
-        imin: i32,
-        dsec: f64,
-        gregflag: i32,
-) -> Result<[f64;2], String> {
+    iyear: i32,
+    imonth: i32,
+    iday: i32,
+    ihour: i32,
+    imin: i32,
+    dsec: f64,
+    gregflag: i32,
+) -> Result<[f64; 2], String> {
     unsafe {
         let mut serr = crate::new_serr_buffer();
-        let mut dret: [f64;2] = [0.;2];
+        let mut dret: [f64; 2] = [0.; 2];
 
         let code = raw::swe_utc_to_jd(
             iyear,
@@ -695,7 +537,6 @@ pub fn utc_to_jd(
     }
 }
 
-
 //extern "C" {
 //    pub fn swe_revjul(
 //        jd: f64,
@@ -707,24 +548,14 @@ pub fn utc_to_jd(
 //    );
 //}
 //
-pub fn revjul(
-        jd: f64,
-        gregflag: i32,
-) -> (i32, i32, i32, f64) {
+pub fn revjul(jd: f64, gregflag: i32) -> (i32, i32, i32, f64) {
     unsafe {
         let mut jyear: i32 = 0;
         let mut jmon: i32 = 0;
         let mut jday: i32 = 0;
         let mut jut: f64 = 0.;
 
-        raw::swe_revjul(
-            jd,
-            gregflag,
-            &mut jyear,
-            &mut jmon,
-            &mut jday,
-            &mut jut,
-        );
+        raw::swe_revjul(jd, gregflag, &mut jyear, &mut jmon, &mut jday, &mut jut);
 
         (jyear, jmon, jday, jut)
     }
@@ -916,25 +747,19 @@ pub fn revjul(
 //    ) -> ::std::os::raw::c_int;
 //}
 //
-pub fn houses(
-    tjd_ut: f64,
-    geolat: f64,
-    geolon: f64,
-    hsys: i32, 
-) -> ([f64; 13], [f64; 10]) {
+pub fn houses(tjd_ut: f64, geolat: f64, geolon: f64, hsys: i32) -> ([f64; 13], [f64; 10]) {
     unsafe {
         let mut cusps: [f64; 13] = [0.0; 13];
         let mut ascmc: [f64; 10] = [0.0; 10];
 
-//                   * eastern longitude is positive,
-//                   * western longitude is negative,
-//                   * northern latitude is positive,
-//                   * southern latitude is negative */
-
+        //                   * eastern longitude is positive,
+        //                   * western longitude is negative,
+        //                   * northern latitude is positive,
+        //                   * southern latitude is negative */
         raw::swe_houses(
             tjd_ut,
-            geolat,  /* geographic latitude, in degrees */
-            geolon,  /* geographic longitude, in degrees */
+            geolat, /* geographic latitude, in degrees */
+            geolon, /* geographic longitude, in degrees */
             hsys,
             cusps.as_mut_ptr(),
             ascmc.as_mut_ptr(),
@@ -965,17 +790,13 @@ pub fn houses(
 //        isgn: *mut int32,
 //    );
 //}
-pub fn split_deg(
-    ddeg: f64,
-    roundflag: i32,
-
-) -> (i32, i32, i32, f64, i32) {
+pub fn split_deg(ddeg: f64, roundflag: i32) -> (i32, i32, i32, f64, i32) {
     unsafe {
-        let mut ideg: i32=0 ;//*mut int32,
-        let mut imin: i32 = 0;//*mut int32,
-        let mut isec: i32 = 0;//*mut int32,
+        let mut ideg: i32 = 0; //*mut int32,
+        let mut imin: i32 = 0; //*mut int32,
+        let mut isec: i32 = 0; //*mut int32,
         let mut dsecfr: f64 = 0.; //: *mut f64,
-        let mut isgn: i32 =0 ;    //: *mut int32,
+        let mut isgn: i32 = 0; //: *mut int32,
 
         raw::swe_split_deg(
             ddeg,
@@ -993,25 +814,24 @@ pub fn split_deg(
 
 pub fn houses_ex(
     tjd_ut: f64,
-    iflag:  i32,
+    iflag: i32,
     geolat: f64,
     geolon: f64,
-    hsys: i32, 
+    hsys: i32,
 ) -> ([f64; 13], [f64; 10]) {
     unsafe {
         let mut cusps: [f64; 13] = [0.0; 13];
         let mut ascmc: [f64; 10] = [0.0; 10];
 
-//                   * eastern longitude is positive,
-//                   * western longitude is negative,
-//                   * northern latitude is positive,
-//                   * southern latitude is negative */
-
+        //                   * eastern longitude is positive,
+        //                   * western longitude is negative,
+        //                   * northern latitude is positive,
+        //                   * southern latitude is negative */
         raw::swe_houses_ex(
             tjd_ut,
             iflag,
-            geolat,  /* geographic latitude, in degrees */
-            geolon,  /* geographic longitude, in degrees */
+            geolat, /* geographic latitude, in degrees */
+            geolon, /* geographic longitude, in degrees */
             hsys,
             cusps.as_mut_ptr(),
             ascmc.as_mut_ptr(),
@@ -1027,7 +847,7 @@ pub fn house_pos(
     eps: f64,
     hsys: i32,
     planet_lon: f64,
-    planet_lat: f64
+    planet_lat: f64,
 ) -> Result<f64, String> {
     unsafe {
         let mut xpin = [planet_lon, planet_lat];

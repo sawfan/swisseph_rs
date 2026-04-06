@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct JulianDay {
     pub et: f64, // ET (TT)

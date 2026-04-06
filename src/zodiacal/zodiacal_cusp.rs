@@ -1,69 +1,64 @@
 use crate::*;
 use std::fmt;
 
-
 #[derive(Clone)]
 pub struct ZodiacalCusp {
     pub cusp: Cusp,
 
-    pub first       :ZodiacalSplitDegree,
-    pub second      :ZodiacalSplitDegree,
-    pub third       :ZodiacalSplitDegree,
-    pub fourth      :ZodiacalSplitDegree,
-    pub fifth       :ZodiacalSplitDegree,
-    pub sixth       :ZodiacalSplitDegree,
-    pub seventh     :ZodiacalSplitDegree,
-    pub eighth      :ZodiacalSplitDegree,
-    pub ninth       :ZodiacalSplitDegree,
-    pub tenth       :ZodiacalSplitDegree,
-    pub eleventh    :ZodiacalSplitDegree,
-    pub twelfth     :ZodiacalSplitDegree,
+    pub first: ZodiacalSplitDegree,
+    pub second: ZodiacalSplitDegree,
+    pub third: ZodiacalSplitDegree,
+    pub fourth: ZodiacalSplitDegree,
+    pub fifth: ZodiacalSplitDegree,
+    pub sixth: ZodiacalSplitDegree,
+    pub seventh: ZodiacalSplitDegree,
+    pub eighth: ZodiacalSplitDegree,
+    pub ninth: ZodiacalSplitDegree,
+    pub tenth: ZodiacalSplitDegree,
+    pub eleventh: ZodiacalSplitDegree,
+    pub twelfth: ZodiacalSplitDegree,
 }
 
 impl ZodiacalCusp {
     pub fn new(cusp: Cusp) -> Self {
+        let first = swe2::split_deg2_zodiacal(cusp.first, SplitDegKind::none());
+        let second = swe2::split_deg2_zodiacal(cusp.second, SplitDegKind::none());
+        let third = swe2::split_deg2_zodiacal(cusp.third, SplitDegKind::none());
+        let fourth = swe2::split_deg2_zodiacal(cusp.fourth, SplitDegKind::none());
+        let fifth = swe2::split_deg2_zodiacal(cusp.fifth, SplitDegKind::none());
+        let sixth = swe2::split_deg2_zodiacal(cusp.sixth, SplitDegKind::none());
+        let seventh = swe2::split_deg2_zodiacal(cusp.seventh, SplitDegKind::none());
+        let eighth = swe2::split_deg2_zodiacal(cusp.eighth, SplitDegKind::none());
+        let ninth = swe2::split_deg2_zodiacal(cusp.ninth, SplitDegKind::none());
+        let tenth = swe2::split_deg2_zodiacal(cusp.tenth, SplitDegKind::none());
+        let eleventh = swe2::split_deg2_zodiacal(cusp.eleventh, SplitDegKind::none());
+        let twelfth = swe2::split_deg2_zodiacal(cusp.twelfth, SplitDegKind::none());
 
-        let first       = swe2::split_deg2_zodiacal(cusp.first, SplitDegKind::none());
-        let second      = swe2::split_deg2_zodiacal(cusp.second, SplitDegKind::none());
-        let third       = swe2::split_deg2_zodiacal(cusp.third, SplitDegKind::none());
-        let fourth      = swe2::split_deg2_zodiacal(cusp.fourth, SplitDegKind::none());
-        let fifth       = swe2::split_deg2_zodiacal(cusp.fifth, SplitDegKind::none());
-        let sixth       = swe2::split_deg2_zodiacal(cusp.sixth, SplitDegKind::none());
-        let seventh     = swe2::split_deg2_zodiacal(cusp.seventh, SplitDegKind::none());
-        let eighth      = swe2::split_deg2_zodiacal(cusp.eighth, SplitDegKind::none());
-        let ninth       = swe2::split_deg2_zodiacal(cusp.ninth, SplitDegKind::none());
-        let tenth       = swe2::split_deg2_zodiacal(cusp.tenth, SplitDegKind::none());
-        let eleventh    = swe2::split_deg2_zodiacal(cusp.eleventh, SplitDegKind::none());
-        let twelfth     = swe2::split_deg2_zodiacal(cusp.twelfth, SplitDegKind::none());
-
-        Self { 
+        Self {
             cusp,
 
-            first    ,
-            second   ,
-            third    ,
-            fourth   ,
-            fifth    ,
-            sixth    ,
-            seventh  ,
-            eighth   ,
-            ninth    ,
-            tenth    ,
-            eleventh ,
-            twelfth  ,
-
+            first,
+            second,
+            third,
+            fourth,
+            fifth,
+            sixth,
+            seventh,
+            eighth,
+            ninth,
+            tenth,
+            eleventh,
+            twelfth,
         }
     }
 
     pub fn to_text(&self) -> Vec<String> {
         self.clone().into_iter().map(|x| x.to_text()).collect()
     }
-
 }
 
 impl fmt::Debug for ZodiacalCusp {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-
         f.debug_struct("ZodiacalAscMc")
             .field("first", &self.first)
             .field("second", &self.second)
@@ -72,7 +67,7 @@ impl fmt::Debug for ZodiacalCusp {
             .field("fifth", &self.fifth)
             .field("sixth", &self.sixth)
             .field("seventh", &self.seventh)
-            .field("eighth",&self.eighth)
+            .field("eighth", &self.eighth)
             .field("ninth", &self.ninth)
             .field("tenth", &self.tenth)
             .field("eleventh", &self.eleventh)
@@ -119,4 +114,3 @@ impl Iterator for ZodiacalCuspIntoIterator {
         Some(result)
     }
 }
-

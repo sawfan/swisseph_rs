@@ -12,4 +12,3 @@ pub enum CalcResult {
     _EquatorialPosition(EquatorialPosition),
     _RectangularPosition(RectangularPosition),
 }
-

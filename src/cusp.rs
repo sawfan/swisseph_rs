@@ -1,4 +1,3 @@
-use crate::*;
 
 #[derive(Debug, Clone)]
 pub struct Cusp {
@@ -17,8 +16,7 @@ pub struct Cusp {
 }
 
 impl Cusp {
-    pub fn iter() {
-    }
+    pub fn iter() {}
     pub fn new(
         first: f64,
         second: f64,

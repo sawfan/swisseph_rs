@@ -17,7 +17,7 @@ pub mod position;
 pub use position::*;
 
 pub mod zodiacal;
-pub use zodiacal::*;
+use zodiacal::*;
 
 pub mod julian_day;
 pub use julian_day::*;
@@ -41,10 +41,7 @@ pub mod se_flag;
 pub use se_flag::*;
 
 pub mod builder;
-pub use builder::*;
 
-#[macro_use]
-extern crate derive_builder;
 
 //#[cfg(test)]
 //mod tests {

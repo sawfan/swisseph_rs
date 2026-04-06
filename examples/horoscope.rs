@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use chrono::Timelike;
 use serde_derive::Deserialize;
 
+use crate::zodiacal::*;
 use swisseph::swe2::*;
 use swisseph::Body::*;
 use swisseph::HouseSystemKind::*;
@@ -14,7 +15,7 @@ use CalandarKind::*;
 // which case the custom configuration will be used.
 fn main() {
     // Copy examples/config.toml.example to examples/config.toml to customize.
-    // Otherwise, New York's current time config will be used.
+    // Otherwise, New York's current config will be used.
     let config = get_config();
 
     let geolat = config.geolat;

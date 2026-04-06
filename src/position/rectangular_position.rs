@@ -1,4 +1,3 @@
-
 // SEFLG_XYZ
 #[derive(Debug)]
 pub struct RectangularPosition {

@@ -1,4 +1,3 @@
-
 // SEFLG_EQUATORIAL
 #[derive(Debug)]
 pub struct EquatorialPosition {
@@ -9,4 +8,3 @@ pub struct EquatorialPosition {
     pub speed_in_declination: f64,     // (deg/day)
     pub speed_in_distance: f64,        // (AU/day)
 }
-

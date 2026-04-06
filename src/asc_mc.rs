@@ -1,10 +1,13 @@
-use crate::*;
 //use libswisseph_sys::AS_MAXCH;
 
-use libswisseph_sys::{
-    SE_ASC, SE_MC, SE_ARMC, SE_VERTEX, SE_EQUASC, SE_COASC1, SE_COASC2, 
-    SE_POLASC, SE_NASCMC 
+use libswisseph_sys::raw::{
+    SE_ARMC, SE_ASC, SE_COASC1, SE_COASC2, SE_EQUASC, SE_MC, SE_NASCMC, SE_POLASC, SE_VERTEX,
 };
+
+// use libswisseph_sys::{
+//     SE_ASC, SE_MC, SE_ARMC, SE_VERTEX, SE_EQUASC, SE_COASC1, SE_COASC2,
+//     SE_POLASC, SE_NASCMC
+// };
 
 #[derive(Debug, Clone)]
 pub struct AscMc {

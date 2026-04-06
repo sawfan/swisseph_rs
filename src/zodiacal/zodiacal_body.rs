@@ -23,4 +23,3 @@ impl ZodiacalBody {
         format!("{} {}", body, degree)
     }
 }
-

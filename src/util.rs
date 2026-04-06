@@ -31,4 +31,3 @@ pub unsafe fn serr_to_string(s: *mut ::std::os::raw::c_char) -> String {
     let serr: String = str_slice.to_owned();
     serr
 }
-

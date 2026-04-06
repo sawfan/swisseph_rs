@@ -1,5 +1,4 @@
 use crate::*;
-use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct ZodiacalSplitDegree {
@@ -26,4 +25,3 @@ impl ZodiacalSplitDegree {
 //        write!(f, "{}", self.0)
 //    }
 //}
-

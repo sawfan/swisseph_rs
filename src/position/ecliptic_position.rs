@@ -1,4 +1,3 @@
-
 #[derive(Debug)]
 pub struct EclipticPosition {
     pub longitude: f64,
@@ -10,10 +9,7 @@ pub struct EclipticPosition {
 }
 
 impl EclipticPosition {
-
-    pub fn with_array(
-        a: [f64; 6]
-    ) -> Self {
+    pub fn with_array(a: [f64; 6]) -> Self {
         Self::new(a[0], a[1], a[2], a[3], a[4], a[5])
     }
 
@@ -29,10 +25,9 @@ impl EclipticPosition {
             longitude,
             latitude,
             distance_in_au,
-            speed_in_longitude, 
-            speed_in_latitude,  
-            speed_in_distance,  
+            speed_in_longitude,
+            speed_in_latitude,
+            speed_in_distance,
         }
     }
-
 }

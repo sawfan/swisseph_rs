@@ -14,16 +14,10 @@ impl ZodiacalInfo {
     }
 
     pub fn to_text(&self) -> (Vec<String>, (Vec<String>, Vec<String>)) {
-        let bodies: Vec<String> = self.bodies
-            .iter()
-            .map(|x| { 
-                x.to_text() 
-            })
-            .collect();
+        let bodies: Vec<String> = self.bodies.iter().map(|x| x.to_text()).collect();
 
         (bodies, self.houses.to_text())
     }
-
 }
 
 impl fmt::Debug for ZodiacalInfo {
@@ -41,4 +35,3 @@ impl fmt::Debug for ZodiacalInfo {
 //        write!(f, "{}", self.0)
 //    }
 //}
-

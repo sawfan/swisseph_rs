@@ -16,7 +16,12 @@ impl ZodiacalAscMc {
         let asc = swe2::split_deg2_zodiacal(asc_mc.ascendant, SplitDegKind::none());
         let mc = swe2::split_deg2_zodiacal(asc_mc.mc, SplitDegKind::none());
         let vertex = swe2::split_deg2_zodiacal(asc_mc.vertex, SplitDegKind::none());
-        Self { asc_mc, mc, asc, vertex }
+        Self {
+            asc_mc,
+            mc,
+            asc,
+            vertex,
+        }
     }
 
     pub fn to_text(&self) -> Vec<String> {
@@ -26,9 +31,9 @@ impl ZodiacalAscMc {
         vec![asc, mc, vertex]
     }
 
-//    pub fn from_asc_mc(asc_mc: AscMc) -> Self {
-//        Self::new(asc_mc)
-//    }
+    //    pub fn from_asc_mc(asc_mc: AscMc) -> Self {
+    //        Self::new(asc_mc)
+    //    }
 }
 
 impl fmt::Debug for ZodiacalAscMc {
@@ -50,4 +55,3 @@ impl fmt::Debug for ZodiacalAscMc {
 //}
 //
 //
-

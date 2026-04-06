@@ -71,11 +71,7 @@ pub fn split_deg2_zodiacal(ddeg: f64, roundflag: SplitDegKind) -> ZodiacalSplitD
     sd
 }
 
-pub fn calc2(
-    tjd: f64, 
-    body: Body, 
-    flag: Seflg
-) -> Result<CalcResult, String> {
+pub fn calc2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String> {
     let ipl = body as i32;
     let c = swe::calc(tjd, ipl, flag.bits() as i32)?;
 
@@ -91,11 +87,7 @@ pub fn calc2(
     }
 }
 
-pub fn calc_ut2(
-    tjd: f64, 
-    body: Body, 
-    flag: Seflg
-) -> Result<CalcResult, String> {
+pub fn calc_ut2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String> {
     let ipl = body as u32;
     let c = swe::calc_ut(tjd, ipl, flag.bits())?;
 
@@ -112,11 +104,7 @@ pub fn calc_ut2(
 }
 
 use CalcResult::*;
-pub fn calc_ut2_ecliptic(
-    tjd: f64,
-    body: Body,
-    flag: Seflg,
-) -> Result<EclipticPosition, String> {
+pub fn calc_ut2_ecliptic(tjd: f64, body: Body, flag: Seflg) -> Result<EclipticPosition, String> {
     let c = calc_ut2(tjd, body, flag)?;
     match c {
         _EclipticPosition(p) => return Ok(p),
@@ -205,4 +193,3 @@ pub fn utc_time_zone2(
         dsec_out,
     }
 }
-

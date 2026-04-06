@@ -1,4 +1,5 @@
-use libswisseph_sys::AS_MAXCH;
+//use libswisseph_sys::AS_MAXCH;
+use libswisseph_sys::raw::AS_MAXCH;
 
 pub type CalcPrimRet = [f64; 6];
 
@@ -34,4 +35,3 @@ impl DateTime {
         }
     }
 }
-

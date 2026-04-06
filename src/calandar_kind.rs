@@ -1,4 +1,5 @@
-use libswisseph_sys::{SE_GREG_CAL, SE_JUL_CAL};
+//use libswisseph_sys::{SE_GREG_CAL, SE_JUL_CAL};
+use libswisseph_sys::raw::{SE_GREG_CAL, SE_JUL_CAL};
 
 #[derive(Debug)]
 #[rustfmt::skip]

@@ -18,4 +18,3 @@ pub use zodiacal_asc_mc::*;
 
 pub mod zodiacal_split_degree;
 pub use zodiacal_split_degree::*;
-
