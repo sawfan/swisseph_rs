@@ -67,8 +67,7 @@ pub fn split_deg2(ddeg: f64, roundflag: SplitDegKind) -> SplitDegree {
 
 pub fn split_deg2_zodiacal(ddeg: f64, roundflag: SplitDegKind) -> ZodiacalSplitDegree {
     let s = split_deg2(ddeg, SplitDegKind::Zodiacal | roundflag);
-    let sd = ZodiacalSplitDegree::from_split_deg(s);
-    sd
+    ZodiacalSplitDegree::from_split_deg(s)
 }
 
 pub fn calc2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String> {
@@ -83,7 +82,7 @@ pub fn calc2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String> {
         todo!();
     } else {
         let p = EclipticPosition::with_array(c.out);
-        return Ok(CalcResult::_EclipticPosition(p));
+        Ok(CalcResult::_EclipticPosition(p))
     }
 }
 
@@ -99,7 +98,7 @@ pub fn calc_ut2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String>
         todo!();
     } else {
         let p = EclipticPosition::with_array(c.out);
-        return Ok(CalcResult::_EclipticPosition(p));
+        Ok(CalcResult::_EclipticPosition(p))
     }
 }
 
@@ -107,11 +106,11 @@ use CalcResult::*;
 pub fn calc_ut2_ecliptic(tjd: f64, body: Body, flag: Seflg) -> Result<EclipticPosition, String> {
     let c = calc_ut2(tjd, body, flag)?;
     match c {
-        _EclipticPosition(p) => return Ok(p),
+        _EclipticPosition(p) => Ok(p),
         _ => {
             panic!("Expected ecliptic position!")
         }
-    };
+    }
 }
 
 pub fn calc_ut2_equatorial(
@@ -121,11 +120,11 @@ pub fn calc_ut2_equatorial(
 ) -> Result<EquatorialPosition, String> {
     let c = calc_ut2(tjd, body, Seflg::EQUATORIAL | flag)?;
     match c {
-        _EquatorialPosition(p) => return Ok(p),
+        _EquatorialPosition(p) => Ok(p),
         _ => {
             panic!("Expected equitorial position!")
         }
-    };
+    }
 }
 
 pub fn calc_ut2_rectangular(
@@ -135,11 +134,11 @@ pub fn calc_ut2_rectangular(
 ) -> Result<RectangularPosition, String> {
     let c = calc_ut2(tjd, body, Seflg::XYZ | flag)?;
     match c {
-        _RectangularPosition(p) => return Ok(p),
+        _RectangularPosition(p) => Ok(p),
         _ => {
             panic!("Expected rectangular position!")
         }
-    };
+    }
 }
 
 pub fn julday2(dt: DateTime, c: CalandarKind) -> f64 {

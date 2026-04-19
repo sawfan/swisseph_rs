@@ -44,6 +44,7 @@ impl AscMc {
         )
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         ascendant: f64,
         mc: f64,

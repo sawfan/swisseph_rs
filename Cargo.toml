@@ -7,6 +7,11 @@ keywords = ["ephemeris", "astrology", "astronomy", "zodiac", "zodiacal"]
 description = "More ergonomic wrapper for the Swiss Ephemeris"
 authors = [""]
 
+[features]
+default = []
+# Enable libswisseph-sys's VFS support (feature is forwarded to the -sys crate).
+vfs = ["libswisseph-sys/vfs"]
+
 [dependencies]
 bitmask-enum = "2.2.4"
 strum = "0.26"

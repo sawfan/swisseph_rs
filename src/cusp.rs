@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone)]
 pub struct Cusp {
     pub first: f64,
@@ -17,6 +16,7 @@ pub struct Cusp {
 
 impl Cusp {
     pub fn iter() {}
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         first: f64,
         second: f64,

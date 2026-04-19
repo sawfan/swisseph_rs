@@ -1,8 +1,58 @@
 //use libswisseph_sys as raw;
 use libswisseph_sys::raw;
 
+// -----------------------------------------------------------------------------
+// VFS (wasm32-unknown-unknown support)
+// -----------------------------------------------------------------------------
+
+use core::ffi::{c_char, c_int, c_void};
+
+/// Swiss Ephemeris VFS backend API.
+///
+/// This type is intentionally defined in the `swisseph` crate so end users (and
+/// the wasm demo) do not need to import `libswisseph_sys::raw` to register a VFS.
+///
+/// The layout must match `libswisseph/vfs/swevfs.h`.
+#[repr(C)]
+pub struct swe_vfs_api {
+    pub open: Option<
+        unsafe extern "C" fn(
+            ifno: c_int,
+            fname: *const c_char,
+            ephepath: *const c_char,
+            serr: *mut c_char,
+        ) -> *mut c_void,
+    >,
+    pub read_at: Option<
+        unsafe extern "C" fn(
+            h: *mut c_void,
+            dst: *mut c_void,
+            size: usize,
+            count: usize,
+            offset: i32,
+            serr: *mut c_char,
+        ) -> usize,
+    >,
+    pub close: Option<unsafe extern "C" fn(h: *mut c_void)>,
+}
+
+/// Register a Swiss Ephemeris VFS backend.
+///
+/// This is primarily intended for `wasm32-unknown-unknown` builds, where the
+/// module cannot access a host filesystem. A JS host can provide ephemeris file
+/// bytes, and the wasm module can resolve them via this VFS.
+///
+/// # Safety
+///
+/// - `api` must point to a valid `swe_vfs_api` struct.
+/// - All function pointers inside `api` must be valid for the remainder of the
+///   process/module lifetime.
+/// - The callbacks must uphold the contracts expected by Swiss Ephemeris.
+pub unsafe fn set_vfs_api(api: *const swe_vfs_api) {
+    raw::swe_set_vfs_api(api as *const raw::swe_vfs_api);
+}
+
 use std::ffi::CString;
-use std::os::raw::c_char;
 
 use crate::*;
 
@@ -48,7 +98,13 @@ pub fn calc_ut(tjd_ut: f64, ipl: u32, iflag: u32) -> Result<Out<CalcPrimRet, i32
     }
 }
 
-pub fn fixstar(
+/// Calculate a fixed star position.
+///
+/// # Safety
+///
+/// `star` must be a valid, writable, NUL-terminated C string pointer as required
+/// by Swiss Ephemeris (`swe_fixstar` may modify the buffer).
+pub unsafe fn fixstar(
     star: *mut ::std::os::raw::c_char, // TODO: use &str
     tjd: f64,
     iflag: i32,
@@ -67,7 +123,13 @@ pub fn fixstar(
     }
 }
 
-pub fn fixstar_ut(
+/// Calculate a fixed star position.
+///
+/// # Safety
+///
+/// `star` must be a valid, writable, NUL-terminated C string pointer as required
+/// by Swiss Ephemeris (`swe_fixstar` may modify the buffer).
+pub unsafe fn fixstar_ut(
     star: *mut ::std::os::raw::c_char,
     tjd_ut: f64,
     iflag: i32,
@@ -172,7 +234,13 @@ pub fn mooncross_ut(x2cross: f64, jd_ut: f64, flag: i32) -> Result<f64, String> 
     }
 }
 
-pub fn helio_cross(
+/// Find heliocentric crossing.
+///
+/// # Safety
+///
+/// `jd_cross` must be a valid, writable pointer to a `f64` (or array) as
+/// expected by Swiss Ephemeris.
+pub unsafe fn helio_cross(
     ipl: i32,
     x2cross: f64,
     jd_et: f64,
@@ -195,7 +263,13 @@ pub fn helio_cross(
     }
 }
 
-pub fn swe_helio_cross(
+/// Find heliocentric crossing (UT variant).
+///
+/// # Safety
+///
+/// `jd_cross` must be a valid, writable pointer to a `f64` (or array) as
+/// expected by Swiss Ephemeris.
+pub unsafe fn swe_helio_cross(
     ipl: i32,
     x2cross: f64,
     jd_ut: f64,
@@ -261,8 +335,7 @@ pub fn refrac_extended(
             dret.as_mut_ptr(),
         );
 
-        let out = Out { out: dret, code };
-        out
+        Out { out: dret, code }
     }
 }
 
