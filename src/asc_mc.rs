@@ -1,6 +1,6 @@
 //use libswisseph_sys::AS_MAXCH;
 
-use libswisseph_sys::raw::{
+use swisseph_sys::raw::{
     SE_ARMC, SE_ASC, SE_COASC1, SE_COASC2, SE_EQUASC, SE_MC, SE_NASCMC, SE_POLASC, SE_VERTEX,
 };
 

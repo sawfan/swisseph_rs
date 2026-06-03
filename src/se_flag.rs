@@ -1,6 +1,6 @@
 //use libswisseph_sys::*;
 use bitmask_enum::bitmask;
-use libswisseph_sys::raw::*;
+use swisseph_sys::raw::*;
 
 #[bitmask(u32)]
 pub enum Seflg {

@@ -15,9 +15,13 @@ strum_macros = "0.26"
 ## You can also access strum_macros exports directly through strum using the "derive" feature
 #strum = { version = "0.26", features = ["derive"] }
 
-libswisseph-sys = "0.1.2"
+swisseph-sys = "0.2"
 
 derive_builder = "0.20.0"
+
+[features]
+default = []
+vfs = ["swisseph-sys/vfs"]
 
 [dev-dependencies]
 serde = "1.0.204"

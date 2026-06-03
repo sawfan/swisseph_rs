@@ -1,6 +1,6 @@
 //use libswisseph_sys::*;
-use libswisseph_sys::raw::*;
 use strum_macros::{EnumIter, EnumString, FromRepr};
+use swisseph_sys::raw::*;
 
 #[derive(Debug, Clone, EnumIter, EnumString, FromRepr, Default)]
 #[repr(isize)]

@@ -1,6 +1,6 @@
 use bitmask_enum::*;
 //use libswisseph_sys::*;
-use libswisseph_sys::raw::*;
+use swisseph_sys::raw::*;
 
 #[bitmask(u32)]
 #[rustfmt::skip]

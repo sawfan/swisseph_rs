@@ -1,5 +1,5 @@
 //use libswisseph_sys as raw;
-use libswisseph_sys::raw;
+use swisseph_sys::raw;
 
 use std::ffi::CString;
 use std::os::raw::c_char;
