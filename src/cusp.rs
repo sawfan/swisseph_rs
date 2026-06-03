@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone)]
 pub struct Cusp {
     pub first: f64,
