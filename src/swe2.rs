@@ -76,8 +76,8 @@ pub fn calc2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String> {
     let c = swe::calc(tjd, ipl, flag.bits() as i32)?;
 
     if flag.contains(Seflg::EQUATORIAL) {
-        //EquatorialPosition {};
-        todo!();
+        let p = EquatorialPosition::with_array(c.out);
+        return Ok(CalcResult::_EquatorialPosition(p));
     } else if flag.contains(Seflg::XYZ) {
         //RectangularPosition{};
         todo!();
@@ -92,8 +92,8 @@ pub fn calc_ut2(tjd: f64, body: Body, flag: Seflg) -> Result<CalcResult, String>
     let c = swe::calc_ut(tjd, ipl, flag.bits())?;
 
     if flag.contains(Seflg::EQUATORIAL) {
-        //EquatorialPosition {};
-        todo!();
+        let p = EquatorialPosition::with_array(c.out);
+        return Ok(CalcResult::_EquatorialPosition(p));
     } else if flag.contains(Seflg::XYZ) {
         //RectangularPosition{};
         todo!();
