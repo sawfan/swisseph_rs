@@ -1,3 +1,5 @@
+#![allow(clippy::all)]
+
 pub mod types;
 pub use types::*;
 
