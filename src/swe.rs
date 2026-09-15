@@ -1,7 +1,7 @@
 //use libswisseph_sys as raw;
 use swisseph_sys::raw;
 
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
 use crate::*;
@@ -447,6 +447,29 @@ pub fn set_jpl_file(s: &str) {
         let file: *const c_char = c_str.as_ptr() as *const c_char;
         raw::swe_set_jpl_file(file);
     }
+}
+
+pub fn get_current_file_data(ifno: i32) -> Option<CurrentFileData> {
+    let mut start_jd = 0.0;
+    let mut end_jd = 0.0;
+    let mut denum = 0;
+    let path =
+        unsafe { raw::swe_get_current_file_data(ifno, &mut start_jd, &mut end_jd, &mut denum) };
+
+    if path.is_null() {
+        return None;
+    }
+
+    let path = unsafe { CStr::from_ptr(path) }
+        .to_string_lossy()
+        .to_string();
+
+    Some(CurrentFileData {
+        path,
+        start_jd,
+        end_jd,
+        denum,
+    })
 }
 
 pub fn get_planet_name(ipl: i32) -> String {

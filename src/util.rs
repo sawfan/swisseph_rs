@@ -2,7 +2,12 @@ use crate::*;
 use std::ffi::CStr;
 
 pub fn string_from_i8_array(b: BufferType) -> String {
-    String::from_utf8(b.iter().map(|&c| c as u8).collect()).unwrap()
+    let bytes = b
+        .iter()
+        .take_while(|&&c| c != 0)
+        .map(|&c| c as u8)
+        .collect::<Vec<_>>();
+    String::from_utf8_lossy(&bytes).into_owned()
 }
 
 pub fn new_buffer() -> BufferType {

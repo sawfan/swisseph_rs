@@ -18,6 +18,14 @@ impl<T, U> From<Out<T, U>> for (T, U) {
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct CurrentFileData {
+    pub path: String,
+    pub start_jd: f64,
+    pub end_jd: f64,
+    pub denum: i32,
+}
+
 pub struct DateTime {
     pub year: i32,
     pub month: i32,
