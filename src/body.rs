@@ -82,7 +82,7 @@ pub enum Body {
     Kama = (SE_AST_OFFSET + 1387) as isize,
     Aphrodite = (SE_AST_OFFSET + 1388) as isize,
     Apollo = (SE_AST_OFFSET + 1862) as isize,
-    Damocles = (SE_AST_OFFSET + 3553) as isize,
+    Damocles = (SE_AST_OFFSET + 5335) as isize,
     Cruithne = (SE_AST_OFFSET + 3753) as isize,
     PoseidonAstroid = (SE_AST_OFFSET + 4341) as isize,
     Vulcano = (SE_AST_OFFSET + 4464) as isize,
